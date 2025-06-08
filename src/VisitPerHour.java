@@ -93,6 +93,7 @@ public class VisitPerHour
         }
     }
     public static void main( String[] args ) throws Exception {
+        //Get visit count for each hour
         Configuration conf1 = new Configuration();
         Job job1 = Job.getInstance(conf1, "VisitPerHour");
         job1.setJarByClass(VisitPerHour.class);
@@ -104,8 +105,9 @@ public class VisitPerHour
         job1.setOutputValueClass(Text.class);
         job1.setNumReduceTasks(4);
         FileInputFormat.addInputPath(job1, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job1, new Path(args[1] + "_tmp"));
+        FileOutputFormat.setOutputPath(job1, new Path(args[1] + "_tmp")); //Output to temporary path
         job1.waitForCompletion(true);
+        //Descending sorting
         Configuration conf2 = new Configuration();
         Job job2 = Job.getInstance(conf2, "VisitPerHourSort");
         job2.setJarByClass(VisitPerHour.class);
@@ -115,14 +117,14 @@ public class VisitPerHour
         job2.setMapOutputValueClass(Text.class);
         job2.setOutputKeyClass(Text.class);
         job2.setOutputValueClass(IntWritable.class);
-        job2.setSortComparatorClass(DescendingIntComparator.class);
+        job2.setSortComparatorClass(DescendingIntComparator.class); //Use custom comparator
         job2.setNumReduceTasks(1);
         FileInputFormat.addInputPath(job2, new Path(args[1] + "_tmp"));
         FileOutputFormat.setOutputPath(job2, new Path(args[1]));
         int status = job2.waitForCompletion(true) ? 0 : 1;
         FileSystem fs = FileSystem.get(conf2);
         if (fs.exists(new Path(args[1] + "_tmp"))) {
-            fs.delete(new Path(args[1] + "_tmp") ,true);
+            fs.delete(new Path(args[1] + "_tmp") ,true); //Delete temporary path
         }
         System.exit(status);
     }

@@ -29,7 +29,7 @@ public class Log2Vector
 
                 String[] buf = time_local.split(":|/");
                 int h = Integer.parseInt(buf[3]);
-                int at_night = (h >= 6 && h < 18) ? 0 : 1;
+                int at_night = (h >= 6 && h < 18) ? 0 : 1; //6:00-18:00 is daytime, 18:00-6:00 is nighttime
 
                 context.write(new Text(remote_addr), new Text(at_night + " \"" + http_user_agent));
             }
