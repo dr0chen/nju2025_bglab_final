@@ -18,6 +18,7 @@ public class ParseLog
         @Override
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             String logEntry = value.toString();
+            //Use regex to get fields
             String logPattern = "^(\\S+) (\\S+ \\S+) \\[(.*?)\\] \"(.*?)\" \\[(\\d+)\\] (\\d+) \"(.*?)\" \"(.*?)\"$";
             Pattern pattern = Pattern.compile(logPattern);
             Matcher matcher = pattern.matcher(logEntry);

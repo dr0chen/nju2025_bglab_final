@@ -371,6 +371,7 @@ public class KMeans
         }
         normalizeJob.waitForCompletion(true);
 
+        //Get initial centroids
         Vector<Centroid> centroids = new Vector<>();
         Path directory = new Path(args[1], "normalized_vectors");
         FileStatus[] files = fs.listStatus(directory);

@@ -37,6 +37,7 @@ public class Log2Vector
     }
 
     public static class Log2VectorReducer extends Reducer<Text, Text, Text, Text> {
+        //An agent is mobile if its name contains at least one of these keywords
         String[] mobileKeywords = {
             "mobile", "android", "iphone", "ipad"
         };

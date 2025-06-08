@@ -70,6 +70,7 @@ public class HighRiskUsers
             FileSystem fs = FileSystem.get(conf);
             BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(new Path(conf.get("visitagent")))));
             String line;
+            //Extract the top-10 used agents
             int i = 10;
             while (i > 0 && (line = br.readLine()) != null) {
                 String[] buf = line.trim().split("\\s+[0-9]+$");
@@ -90,6 +91,7 @@ public class HighRiskUsers
                 String status = matcher.group(1);
                 String body_bytes_sent = matcher.group(2);
                 String http_user_agent = matcher.group(3);
+                //Filter out non-top-10 agents
                 if (!top10Agents.contains((http_user_agent))) return;
                 if (!http_user_agent.equals("-\"")) context.write(new Text(http_user_agent), new Text(status + " " + body_bytes_sent));
             }
